@@ -23,6 +23,8 @@
 #include "IOWrapper/NotifyBuffer.h"
 #include "IOWrapper/TimestampedObject.h"
 
+#include <nav_msgs/Odometry.h>
+
 
 
 namespace lsd_slam
@@ -64,6 +66,8 @@ public:
 
 protected:
 	NotifyBuffer<TimestampedMat>* imageBuffer;
+    NotifyBuffer<TimestampedPointCloud2>* lidarBuffer;
+    NotifyBuffer<nav_msgs::Odometry>* odometryBuffer;
 	float fx_, fy_, cx_, cy_;
 	int width_, height_;
 };

@@ -63,6 +63,8 @@ public:
 	// get called on ros-message callbacks
 	void vidCb(const sensor_msgs::ImageConstPtr img);
 	void infoCb(const sensor_msgs::CameraInfoConstPtr info);
+    void lidarCb(const sensor_msgs::PointCloud2ConstPtr& input);
+    void odometryCb(const nav_msgs::OdometryConstPtr& input);
 
 private:
 
@@ -73,6 +75,8 @@ private:
 
 	std::string vid_channel;
 	ros::Subscriber vid_sub;
+    ros::Subscriber lidar_sub;
+    ros::Subscriber odometry_sub;
 
 	int lastSEQ;
 };

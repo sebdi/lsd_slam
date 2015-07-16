@@ -43,12 +43,15 @@ ROSImageStreamThread::ROSImageStreamThread()
 	vid_channel = nh_.resolveName("image");
 	vid_sub          = nh_.subscribe(vid_channel,1, &ROSImageStreamThread::vidCb, this);
 
+    vl_slam_sub = nh_.subscribe("/vl_slam/lsd_slam",20, &ROSImageStreamThread::lidarCb, this);
 
 	// wait for cam calib
 	width_ = height_ = 0;
 
 	// imagebuffer
 	imageBuffer = new NotifyBuffer<TimestampedMat>(8);
+    lidarBuffer = new NotifyBuffer<TimestampedPointCloud2>(8);
+    odometryBuffer = new NotifyBuffer<nav_msgs::Odometry>(100);
 	undistorter = 0;
 	lastSEQ = 0;
 
@@ -141,6 +144,25 @@ void ROSImageStreamThread::vidCb(const sensor_msgs::ImageConstPtr img)
 	}
 
 	imageBuffer->pushBack(bufferItem);
+}
+
+void ROSImageStreamThread::lidarCb(const sensor_msgs::PointCloud2ConstPtr& input)
+{
+    TimestampedPointCloud2 lidarData;
+    if(input->header.stamp.toSec() != 0)
+        lidarData.timestamp =  Timestamp(input->header.stamp.toSec());
+    else
+        lidarData.timestamp =  Timestamp(ros::Time::now().toSec());
+
+    lidarData.data = *input;
+    lidarBuffer->pushBack(lidarData);
+}
+
+void ROSImageStreamThread::odometryCb(const nav_msgs::OdometryConstPtr& input)
+{
+    nav_msgs::Odometry odometryData;
+    odometryData = *input;
+    odometryBuffer->pushBack(odometryData);
 }
 
 void ROSImageStreamThread::infoCb(const sensor_msgs::CameraInfoConstPtr info)

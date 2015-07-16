@@ -26,7 +26,7 @@
 #include <opencv2/core/core.hpp>
 
 #include "IOWrapper/Timestamp.h"
-
+#include <sensor_msgs/PointCloud2.h>
 
 namespace lsd_slam
 {
@@ -39,6 +39,8 @@ struct TimestampedObject
 };
 
 typedef TimestampedObject< cv::Mat > TimestampedMat;
+typedef TimestampedObject<sensor_msgs::PointCloud2 > TimestampedPointCloud2;
+
 
 }
 #endif
