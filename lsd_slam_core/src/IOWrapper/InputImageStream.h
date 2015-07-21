@@ -53,6 +53,11 @@ public:
 	 */
 	inline NotifyBuffer<TimestampedMat>* getBuffer() {return imageBuffer;};
 
+    /**
+     * Gets the NotifyBuffer to which incoming images are stored.
+     */
+    inline NotifyBuffer<Timestampedvlslam>* getvlslamBuffer() {return vlBuffer;};
+
 
 	/**
 	 * Gets the Camera Calibration. To avoid any dependencies, just as simple float / int's.
@@ -68,6 +73,7 @@ protected:
 	NotifyBuffer<TimestampedMat>* imageBuffer;
     NotifyBuffer<TimestampedPointCloud2>* lidarBuffer;
     NotifyBuffer<nav_msgs::Odometry>* odometryBuffer;
+    NotifyBuffer<Timestampedvlslam>* vlBuffer;
 	float fx_, fy_, cx_, cy_;
 	int width_, height_;
 };

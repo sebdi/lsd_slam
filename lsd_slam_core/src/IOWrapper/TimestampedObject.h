@@ -27,6 +27,7 @@
 
 #include "IOWrapper/Timestamp.h"
 #include <sensor_msgs/PointCloud2.h>
+#include "lsdslamMsg.h"
 
 namespace lsd_slam
 {
@@ -40,6 +41,7 @@ struct TimestampedObject
 
 typedef TimestampedObject< cv::Mat > TimestampedMat;
 typedef TimestampedObject<sensor_msgs::PointCloud2 > TimestampedPointCloud2;
+typedef TimestampedObject<vl_slam_core::lsdslamMsg> Timestampedvlslam;
 
 
 }

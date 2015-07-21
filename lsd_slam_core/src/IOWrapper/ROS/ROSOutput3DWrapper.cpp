@@ -90,7 +90,7 @@ void ROSOutput3DWrapper::publishKeyframe(Frame* f)
 	fMsg.height = h;
 
 
-	fMsg.pointcloud.resize(w*h*sizeof(InputPointDense));
+    fMsg.pointcloud.resize(w*h*sizeof(InputPointDense));
 
 	InputPointDense* pc = (InputPointDense*)fMsg.pointcloud.data();
 

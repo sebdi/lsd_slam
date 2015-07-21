@@ -269,7 +269,7 @@ private:
 
 	void optimizationThreadLoop();
 
-
+    cv::Mat debugImageGT;
 	
 };
 

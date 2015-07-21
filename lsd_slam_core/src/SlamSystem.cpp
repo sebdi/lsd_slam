@@ -123,6 +123,8 @@ SlamSystem::SlamSystem(int w, int h, Eigen::Matrix3f K, bool enableSLAM)
 	nAvgTrackFrame = nAvgOptimizationIteration = nAvgFindConstraintsItaration = nAvgFindReferences = 0;
 	gettimeofday(&lastHzUpdate, NULL);
 
+    debugImageGT = cv::Mat(h,w, CV_8UC3);
+
 }
 
 SlamSystem::~SlamSystem()
@@ -835,6 +837,21 @@ void SlamSystem::gtDepthInit(uchar* image, float* depth, double timeStamp, int i
 	currentKeyFrameMutex.lock();
 
 	currentKeyFrame.reset(new Frame(id, width, height, K, timeStamp, image));
+
+    cv::Mat keyFrameImage(currentKeyFrame->height(), currentKeyFrame->width(), CV_32F, const_cast<float*>(currentKeyFrame->image()));
+    keyFrameImage.convertTo(debugImageGT, CV_8UC1);
+    cv::cvtColor(debugImageGT, debugImageGT, CV_GRAY2RGB);
+    for(int y=0;y<height;y++)
+        for(int x=0;x<width;x++)
+        {
+            int idx = x + y*width;
+
+            if (depth[idx]>0)
+            debugImageGT.at<cv::Vec3b>(y,x) = cv::Vec3b(0,0,255);
+        }
+
+    Util::displayImage( "debugImageGT", debugImageGT, false );
+
 	currentKeyFrame->setDepthFromGroundTruth(depth);
 
 	map->initializeFromGTDepth(currentKeyFrame.get());

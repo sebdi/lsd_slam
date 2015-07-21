@@ -31,6 +31,9 @@
 #include <fstream>
 
 
+#include "lsdslamMsg.h"
+
+
 namespace lsd_slam
 {
 
@@ -40,10 +43,10 @@ using namespace cv;
 ROSImageStreamThread::ROSImageStreamThread()
 {
 	// subscribe
-	vid_channel = nh_.resolveName("image");
-	vid_sub          = nh_.subscribe(vid_channel,1, &ROSImageStreamThread::vidCb, this);
+    //vid_channel = nh_.resolveName("image");
+    //vid_sub          = nh_.subscribe(vid_channel,1, &ROSImageStreamThread::vidCb, this);
 
-    vl_slam_sub = nh_.subscribe("/vl_slam/lsd_slam",20, &ROSImageStreamThread::lidarCb, this);
+    vl_slam_sub = nh_.subscribe("/vl_slam/lsd_slam_para",20, &ROSImageStreamThread::lidarCb, this);
 
 	// wait for cam calib
 	width_ = height_ = 0;
@@ -52,6 +55,7 @@ ROSImageStreamThread::ROSImageStreamThread()
 	imageBuffer = new NotifyBuffer<TimestampedMat>(8);
     lidarBuffer = new NotifyBuffer<TimestampedPointCloud2>(8);
     odometryBuffer = new NotifyBuffer<nav_msgs::Odometry>(100);
+    vlBuffer = new NotifyBuffer<Timestampedvlslam>(20);
 	undistorter = 0;
 	lastSEQ = 0;
 
@@ -146,16 +150,18 @@ void ROSImageStreamThread::vidCb(const sensor_msgs::ImageConstPtr img)
 	imageBuffer->pushBack(bufferItem);
 }
 
-void ROSImageStreamThread::lidarCb(const sensor_msgs::PointCloud2ConstPtr& input)
+void ROSImageStreamThread::lidarCb(const vl_slam_core::lsdslamMsgPtr input)
 {
-    TimestampedPointCloud2 lidarData;
-    if(input->header.stamp.toSec() != 0)
-        lidarData.timestamp =  Timestamp(input->header.stamp.toSec());
+    std::cout << "Received msg form vl slam" << std::endl;
+    Timestampedvlslam data;
+    if(input->image.header.stamp.toSec() != 0)
+        data.timestamp =  Timestamp(input->image.header.stamp.toSec());
     else
-        lidarData.timestamp =  Timestamp(ros::Time::now().toSec());
+        data.timestamp =  Timestamp(ros::Time::now().toSec());
 
-    lidarData.data = *input;
-    lidarBuffer->pushBack(lidarData);
+    data.data = *input;
+    vlBuffer->pushBack(data);
+    std::cout << "size is now " << vlBuffer->size() << std::endl;
 }
 
 void ROSImageStreamThread::odometryCb(const nav_msgs::OdometryConstPtr& input)

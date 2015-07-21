@@ -8,7 +8,7 @@ include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
 #  Release        : w/o debug symbols, w/ optimization
 #  RelWithDebInfo : w/ debug symbols, w/ optimization
 #  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
-set(ROS_BUILD_TYPE Release)
+set(ROS_BUILD_TYPE Debug)
 
 rosbuild_init() 
 
@@ -39,7 +39,7 @@ add_definitions("-DENABLE_SSE")
 
 # Also add some useful compiler flag
 set(CMAKE_CXX_FLAGS
-   "${CMAKE_CXX_FLAGS} ${SSE_FLAGS} -march=native  -std=c++0x"
+   "${CMAKE_CXX_FLAGS} ${SSE_FLAGS} -march=native  -std=c++0x -g"
 ) 
 
 # Set source files
