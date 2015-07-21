@@ -1,3 +1,10 @@
+# KITTI modifications
+If you want to try LSD-SLAM on the KITTI dataset you can use this branch. I'm providing the calibration files with this branch. You have just to download the [kitti dataset](http://www.cvlibs.net/datasets/kitti/eval_odometry.php) and start LSD-SLAM with:
+
+    rosrun lsd_slam_core dataset_slam _files:=<path_to_kitti> _hz:=<hz> _calib:=kitti_<seq. number>.cfg
+
+
+
 # LSD-SLAM: Large-Scale Direct Monocular SLAM
 
 LSD-SLAM is a novel approach to real-time monocular SLAM. It is fully direct (i.e. does not use keypoints / features) and creates large-scale, 
