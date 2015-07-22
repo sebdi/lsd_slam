@@ -1,5 +1,5 @@
-# KITTI modifications
-If you want to try LSD-SLAM on the KITTI dataset you can use this branch. I'm providing the calibration files with this branch. You have just to download the [kitti dataset](http://www.cvlibs.net/datasets/kitti/eval_odometry.php) and start LSD-SLAM with:
+# LSD-SLAM initilized by LIDAR - THIS IS A BETA!
+This version initilized LSD-SLAM with LIDAR depth.  by using the [kitti dataset](http://www.cvlibs.net/datasets/kitti/eval_odometry.php). The path to the lidar data is hard coded. If you changed the path you can run it with:
 
     rosrun lsd_slam_core dataset_slam _files:=<path_to_kitti> _hz:=<hz> _calib:=kitti_<seq. number>.cfg
 
