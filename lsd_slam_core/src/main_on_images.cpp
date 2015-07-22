@@ -62,6 +62,8 @@ float* projectLidarInImage(int width, int height, std::vector<veloPoint> &velpoi
     Eigen::Vector4d X_temp;
     Eigen::Vector3d x;
     float * depth = new float[width*height];
+    for (size_t i=0;i<width*height;i++)
+        depth[i]=0.0f;
 
     for (size_t j=0;j<velpoints.size();j++)
     {
